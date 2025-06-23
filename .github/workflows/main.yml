@@ -1,0 +1,27 @@
+name: Streak
+
+on:
+  schedule:
+    - cron: '0 12 * * *' # Every day at noon UTC
+  workflow_dispatch:
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Git
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ secrets.USER_EMAIL }}"
+
+      - name: Make empty commit
+        run: |
+          git commit --allow-empty -m "Streak grass: $(date +'%Y-%m-%d %H:%M:%S')"
+
+      - name: Push commit
+        run: |
+          git push origin HEAD:main
