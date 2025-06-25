@@ -2,7 +2,7 @@ name: Streak
 
 on:
   schedule:
-    - cron: '0 12 * * *' # Every day at noon UTC
+    - cron: '40 15 * * *' # Every day at noon UTC
   workflow_dispatch:
 
 jobs:
