@@ -17,7 +17,13 @@ jobs:
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ secrets.USER_EMAIL }}"
-
+      - name: Push changes
+        run: git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/ashutoshojha18/github-contributions.git HEAD:main
+      
+      - name: Push changes
+        run: git push origin HEAD:main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
       - name: Make empty commit
         run: |
           git commit --allow-empty -m "Streak grass: $(date +'%Y-%m-%d %H:%M:%S')"
