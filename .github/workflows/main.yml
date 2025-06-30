@@ -2,7 +2,7 @@ name: Streak
 
 on:
   schedule:
-    - cron: '40 15 * * *' # Every day at noon UTC
+    - cron: '20 14 * * *' # Every day at noon UTC
   workflow_dispatch:
 
 jobs:
@@ -17,9 +17,7 @@ jobs:
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ secrets.USER_EMAIL }}"
-      - name: Push changes
-        run: git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/ashutoshojha18/github-contributions.git HEAD:main
-      
+          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/ashutoshojha18/github-contributions.git HEAD:main
       - name: Push changes
         run: git push origin HEAD:main
         env:
