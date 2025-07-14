@@ -24,7 +24,7 @@ jobs:
 
       - name: Make empty commit
         run: |
-          git commit --allow-empty -m "Streak grass: $(date +'%Y-%m-%d %H:%M:%S')"
+          git commit --allow-empty --author="ashutoshojha18@gmail.com" -m "Streak grass: $(date +'%Y-%m-%d %H:%M:%S')"
 
       - name: Push commit
         env:
