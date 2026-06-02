@@ -2,30 +2,39 @@ name: Streak
 
 on:
   schedule:
-    - cron: '20 14 * * *' # Every day at noon UTC
+    - cron: '20 14 * * *'  # 19:50 IST
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   commit:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Setup Git
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ secrets.USER_EMAIL }}"
-          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/ashutoshojha18/github-contributions.git HEAD:main
-      - name: Push changes
-        run: git push origin HEAD:main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-      - name: Make empty commit
-        run: |
-          git commit --allow-empty -m "Streak grass: $(date +'%Y-%m-%d %H:%M:%S')"
 
-      - name: Push commit
+      - name: Generate random commits
         run: |
-          git push origin HEAD:main
+          # Generate random number between 1 and 5
+          COMMITS=$(( (RANDOM % 5) + 1 ))
+          echo "Creating $COMMITS commits today"
+          
+          # Loop to create multiple commits
+          for i in $(seq 1 $COMMITS); do
+            git commit --allow-empty --author="ashutoshojha18@gmail.com" -m "Streak grass: $(date +'%Y-%m-%d %H:%M:%S') [Commit $i/$COMMITS]"
+          done
+
+      - name: Push commits
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git push https://x-access-token:${GH_PAT}@github.com/${{ github.repository }} HEAD:main
